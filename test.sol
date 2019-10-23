@@ -1,4 +1,4 @@
-pragma solidity >=0.4.21;
+pragma solidity ^0.4.21;
 
 // Relevant part of the CaptureTheEther contract.
 contract CaptureTheEther {

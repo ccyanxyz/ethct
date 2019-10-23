@@ -14,7 +14,6 @@ if __name__ == "__main__":
     parser.add_argument('--call', help = "call contract function")
 
     args = parser.parse_args()
-    print(args)
     if args.compile:
         contract = Contract(args.compile)
         contract.compile(save = args.save)

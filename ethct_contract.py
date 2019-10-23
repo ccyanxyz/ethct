@@ -93,6 +93,7 @@ class Contract:
             tx = func(*arg_list).buildTransaction({
                 'from': self.account.address,
                 'nonce': self.web3.eth.getTransactionCount(self.account.address),
+                'gas': 1000000,
                 'gasPrice': self.web3.toWei('21', 'gwei'),
                 })
             signed = self.web3.eth.account.signTransaction(tx, self.account.privateKey)
