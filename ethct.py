@@ -12,6 +12,7 @@ if __name__ == "__main__":
     # deploy contract
     parser.add_argument('-d', '--deploy', help = "deploy contract")
     parser.add_argument('-n', '--network', help = "choose network", default = "ropsten")
+    parser.add_argument('-v', '--value', help = "deploy tx value", default = None, type = float)
     # call contract function
     parser.add_argument('--address', help = "contract address")
     parser.add_argument('--abi', help = "contract ABI file")
@@ -34,7 +35,7 @@ if __name__ == "__main__":
         contract.compile(save = args.save)
     elif args.deploy:
         contract = Contract(args.deploy, provider_url = URL[args.network])
-        contract.deploy()
+        contract.deploy(value = args.value)
     elif args.call:
         contract = Contract(abifile = args.abi, address = args.address, provider_url = URL[args.network])
         arg_list = args.call.split(' ')

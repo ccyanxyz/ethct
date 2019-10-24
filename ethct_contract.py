@@ -27,7 +27,7 @@ class Contract:
         if bytecodefile is not None:
             self.bytecode = open(bytecodefile).read()
         if address is not None:
-            self.address = address
+            self.address = self.web3.toChecksumAddress(address)
         if hasattr(self, 'abi') and hasattr(self, 'address'):
             self.contract = self.web3.eth.contract(self.address, abi = self.abi)
 
@@ -52,17 +52,18 @@ class Contract:
             cmd = "rm -rf build"
             subprocess.call(cmd, shell = True)
 
-    def deploy(self, overwrite = False):
+    def deploy(self, value = None, overwrite = False):
         if hasattr(self, 'address') and not overwrite:
             print('contract has been deployed')
             return
         if not hasattr(self, 'abi') or not hasattr(self, 'bytecode'):
-            self.compile(save = False)
+            self.compile(save = True)
 
         deploy_tx = self.web3.eth.contract(abi = self.abi, bytecode = self.bytecode).constructor().buildTransaction({
             'from': self.account.address,
+            'value': 0 if value is None else self.web3.toWei(str(value), 'ether'),
             'nonce': self.web3.eth.getTransactionCount(self.account.address),
-            # 'gas': 21000,
+            'gas': 1000000,
             'gasPrice': self.web3.toWei('21', 'gwei'),
             })
         signed = self.web3.eth.account.signTransaction(deploy_tx, self.account.privateKey)
