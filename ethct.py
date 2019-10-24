@@ -47,7 +47,7 @@ if __name__ == "__main__":
     elif args.getblock:
         block = None
         fulltx = False
-        if args.getblock == 'latest':
+        if args.getblock in ['latest', 'earliest', 'pending']:
             block = web3.eth.getBlock('latest', full_transactions = fulltx)
         elif len(args.getblock) > 15:
             block = web3.eth.getBlock(args.getblock, full_transactions = fulltx)
