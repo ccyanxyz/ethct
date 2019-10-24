@@ -79,11 +79,24 @@ class Contract:
                 abiinfo = info
                 break
         func = self.contract.functions.__getitem__(func_name)
+        # for payable function call
+        value_item = None
+        for item in arg_list:
+            if 'value:' in item:
+                value_item = item
+        value = None
+        if value_item is not None and abiinfo['payable']:
+            arg_list.remove(value_item)
+            value = self.web3.toWei(value_item.split(':')[-1], 'ether')
+        # type convert
         for i in range(len(abiinfo['inputs'])):
             if abiinfo['inputs'][i]['type'] == 'bytes32':
                 arg_list[i] = str(arg_list[i]).encode()
             if abiinfo['inputs'][i]['type'] == 'address':
                 arg_list[i] = self.web3.toChecksumAddress(arg_list[i])
+            if 'int' in abiinfo['inputs'][i]['type']:
+                arg_list[i] = int(arg_list[i])
+        # call functions
         if abiinfo['constant']:
             result = func(*arg_list).call({'from': self.account.address}) 
             if isinstance(result, bytes):
@@ -92,6 +105,7 @@ class Contract:
         else:
             tx = func(*arg_list).buildTransaction({
                 'from': self.account.address,
+                'value': 0 if value is None else value,
                 'nonce': self.web3.eth.getTransactionCount(self.account.address),
                 'gas': 1000000,
                 'gasPrice': self.web3.toWei('21', 'gwei'),
