@@ -4,7 +4,7 @@ from web3 import Web3, HTTPProvider
 from constants import *
 from ethct_contract import *
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     # compile contract
     parser.add_argument('-c', '--compile', help = "compile contract")
@@ -61,3 +61,6 @@ if __name__ == "__main__":
         result = web3.eth.getBalance(web3.toChecksumAddress(args.getbalance))
         balance = web3.fromWei(result, 'ether')
         print(balance)
+
+if __name__ == '__main__':
+    main()

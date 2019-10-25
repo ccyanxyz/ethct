@@ -1,0 +1,5 @@
+{
+	"privkey": "YOUR ETHEREUM PRIVATEKEY",
+	"infura_key": "YOUR INFURA APIKEY",
+	"network": "ropsten"
+}
