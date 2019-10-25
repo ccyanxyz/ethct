@@ -92,7 +92,10 @@ class Contract:
         # type convert
         for i in range(len(abiinfo['inputs'])):
             if abiinfo['inputs'][i]['type'] == 'bytes32':
-                arg_list[i] = str(arg_list[i]).encode()
+                if str(arg_list[i])[:2] == '0x':
+                    arg_list[i] = str(arg_list[i])
+                else:
+                    arg_list[i] = str(arg_list[i]).encode()
             if abiinfo['inputs'][i]['type'] == 'address':
                 arg_list[i] = self.web3.toChecksumAddress(arg_list[i])
             if 'int' in abiinfo['inputs'][i]['type']:
