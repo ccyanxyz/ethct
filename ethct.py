@@ -4,8 +4,6 @@ from web3 import Web3, HTTPProvider
 from constants import *
 from ethct_contract import *
 
-default_config_path = os.environ['HOME'] + "/.ethct.json"
-
 def check_config():
     with open(default_config_path, 'r') as f:
         config = json.load(f)

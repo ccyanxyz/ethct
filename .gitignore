@@ -1,3 +1,5 @@
 __pycache__
 build
 config.json
+dist
+ethct.egg-info
