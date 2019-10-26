@@ -16,6 +16,7 @@ def check_privkey():
         config = json.load(f)
         if config['privkey'] == '':
             print('please config your private key')
+            exit()
         
 def main():
     parser = argparse.ArgumentParser()
