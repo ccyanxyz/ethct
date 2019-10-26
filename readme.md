@@ -56,7 +56,7 @@ pip install ethct
    ethct --address 0x2F796FaC147d6fff8b2485d05aE7FB823A478317 --abi ./build/PredictTheBlockHashChallenge.abi --call 'lockInGuess 0x0000000000000000000000000000000000000000000000000000000000000000 value:1'
    ```
 
-   'value:1'  means the value of this transaction is 1 ether
+   'value:1'  means the value of this transaction is 1 ether.
 
 6. Get contract storage:
 
