@@ -143,7 +143,7 @@ def main():
             print('please provide tx value with `--value` option')
             exit()
         if not args.to:
-            print('please provider tx recevier with `--to` option')
+            print('please provider tx receiver with `--to` option')
             exit()
         nonce = None
         data = ""
