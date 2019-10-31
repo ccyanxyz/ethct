@@ -3,6 +3,7 @@ import argparse
 from web3 import Web3, HTTPProvider
 from constants import *
 from ethct_contract import *
+from ethct_helper import *
 
 def check_config():
     with open(default_config_path, 'r') as f:
@@ -52,6 +53,11 @@ def main():
     parser.add_argument('--delete', help = "delete account", type = int)
 
     parser.add_argument('--showconfig', help = "print config", action = "store_true")
+    # sendtx
+    parser.add_argument('--sendtx', help = "send tx", action = "store_true")
+    parser.add_argument('--to', help = "tx receiver")
+    parser.add_argument('--data', help = "tx data")
+    parser.add_argument('--nonce', help = "tx nonce")
 
     args = parser.parse_args()
     network = NETWORK
@@ -132,6 +138,20 @@ def main():
         else:
             config = json.load(open(default_config_path))
             print(config)
+    elif args.sendtx:
+        if not args.value:
+            print('please provide tx value with `--value` option')
+            exit()
+        if not args.to:
+            print('please provider tx recevier with `--to` option')
+            exit()
+        nonce = None
+        data = ""
+        if args.nonce:
+            nonce = args.nonce
+        if args.data:
+            data = args.data
+        sendtx(web3 = web3, to = args.to, value = args.value, nonce = nonce, data = data)
 
 if __name__ == '__main__':
     main()
