@@ -52,7 +52,7 @@ class Contract:
             cmd = "rm -rf build"
             subprocess.call(cmd, shell = True)
 
-    def deploy(self, value = None, overwrite = False):
+    def deploy(self, value = None, overwrite = False, show = True):
         if hasattr(self, 'address') and not overwrite:
             print('contract has been deployed')
             return
@@ -70,10 +70,12 @@ class Contract:
         txhash = self.web3.eth.sendRawTransaction(signed.rawTransaction)
         receipt = self.web3.eth.waitForTransactionReceipt(txhash)
         self.address = receipt['contractAddress']
-        print('contract address:', self.address)
-        print('receipt:', receipt)
+        if show:
+            print('contract address:', self.address)
+            print('receipt:', receipt)
+        return receipt
 
-    def call(self, func_name, arg_list):
+    def call(self, func_name, arg_list, show = True):
         abiinfo = {}
         for info in self.abi:
             if info['name'] == func_name:
@@ -105,7 +107,8 @@ class Contract:
             result = func(*arg_list).call({'from': self.account.address}) 
             if isinstance(result, bytes):
                 result = result.decode()
-            print(result)
+            if show:
+                print(result)
             return result
         else:
             tx = func(*arg_list).buildTransaction({
@@ -118,6 +121,7 @@ class Contract:
             signed = self.web3.eth.account.signTransaction(tx, self.account.privateKey)
             txhash = self.web3.eth.sendRawTransaction(signed.rawTransaction)
             receipt = self.web3.eth.waitForTransactionReceipt(txhash)
-            print(receipt)
+            if show:
+                print(receipt)
             return receipt
 
