@@ -106,6 +106,7 @@ class Contract:
             if isinstance(result, bytes):
                 result = result.decode()
             print(result)
+            return result
         else:
             tx = func(*arg_list).buildTransaction({
                 'from': self.account.address,
@@ -118,4 +119,5 @@ class Contract:
             txhash = self.web3.eth.sendRawTransaction(signed.rawTransaction)
             receipt = self.web3.eth.waitForTransactionReceipt(txhash)
             print(receipt)
+            return receipt
 
