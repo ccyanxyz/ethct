@@ -6,7 +6,7 @@ with open('readme.md', 'r') as f:
 
 setup(
     name = 'ethct',
-    version = '19.10.31.3',
+    version = '19.10.31.4',
     description = 'Ethereum contract tool(command line)',
     long_description = long_description,
     long_description_content_type = "text/markdown",
