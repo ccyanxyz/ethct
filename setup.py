@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 from setuptools import setup
-
-with open('readme.md', 'r') as f:
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'readme.md'), 'r') as f:
     long_description = f.read()
 
 setup(
     name = 'ethct',
-    version = '19.10.31.4',
+    version = '19.10.31.5',
     description = 'Ethereum contract tool(command line)',
     long_description = long_description,
     long_description_content_type = "text/markdown",
