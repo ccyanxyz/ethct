@@ -10,7 +10,8 @@ URL = {
     'ropsten': "https://ropsten.infura.io/v3/" + key['infurakey'],
     'rinkeby': "https://rinkeby.infura.io/v3/" + key['infurakey'],
     'kovan': "https://kovan.infura.io/v3/" + key['infurakey'],
-    'local': "http://localhost:8085",
+    'local': "http://localhost:8545",
 }
 
 PRIVATE_KEY = key['privkey']
+NETWORK = key['network']

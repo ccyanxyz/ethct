@@ -17,7 +17,7 @@ class Contract:
         if provider_url is not None:
             self.provider_url = provider_url
         else:
-            self.provider_url = URL['ropsten']
+            self.provider_url = URL[NETWORK]
         self.web3 = Web3(HTTPProvider(self.provider_url))
         self.account = self.web3.eth.account.privateKeyToAccount(PRIVATE_KEY)
         self.web3.eth.defaultAccount = self.account
