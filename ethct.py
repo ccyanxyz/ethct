@@ -49,6 +49,8 @@ def main():
     parser.add_argument('--privkey', help = "add private key")
     parser.add_argument('--infurakey', help = "set infura apikey")
     parser.add_argument('--account', help = "set default account", type = int)
+    parser.add_argument('--delete', help = "delete account", type = int)
+
     parser.add_argument('--showconfig', help = "print config", action = "store_true")
 
     args = parser.parse_args()
@@ -115,6 +117,9 @@ def main():
             config['infurakey'] = args.infurakey
         if args.account:
             config['defaultAccount'] = args.account
+        if args.delete:
+            config['accounts'].pop(args.delete)
+            config['defaultAccount'] = 0
         f = open(default_config_path, 'w')
         json.dump(config, f)
     elif args.showconfig:
