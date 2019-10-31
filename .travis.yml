@@ -1,0 +1,12 @@
+language: python
+python:
+    - '3.6'
+script: true
+deploy:
+    provider: pypi
+    user: __token__
+    password: $PYPI_TOKEN
+    on:
+        python: 3.6
+        tags: true
+        branch: master
