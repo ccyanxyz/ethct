@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name = 'ethct',
-    version = '19.10.25',
+    version = '19.10.31',
     description = 'Ethereum contract tool(command line)',
     url = 'https://github.com/ccyanxyz/ethct',
     author = 'ccyanxyz',
