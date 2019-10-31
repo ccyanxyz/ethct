@@ -14,8 +14,11 @@ def check_config():
 def check_privkey():
     with open(default_config_path, 'r') as f:
         config = json.load(f)
-        if config['privkey'] == '':
+        if len(config['accounts']) == 0:
             print('please config your private key')
+            exit()
+        if config['defaultAccount'] >= len(config['accounts']):
+            print('please reset your defaultAccount')
             exit()
         
 def main():
@@ -43,8 +46,9 @@ def main():
     parser.add_argument('--getbalance', help = "get account balance")
     # config
     parser.add_argument('--config', help = "add config options", action = "store_true")
-    parser.add_argument('--privkey', help = "set private key")
+    parser.add_argument('--privkey', help = "add private key")
     parser.add_argument('--infurakey', help = "set infura apikey")
+    parser.add_argument('--account', help = "set default account", type = int)
 
     args = parser.parse_args()
     network = NETWORK
@@ -62,14 +66,11 @@ def main():
         contract.compile(save = args.save)
     elif args.deploy:
         check_privkey()
-        network = NETWORK
-        if args.network is not None:
-            network = args.network
         contract = Contract(args.deploy, provider_url = URL[network])
         contract.deploy(value = args.value)
     elif args.call:
         check_privkey()
-        contract = Contract(abifile = args.abi, address = args.address, provider_url = URL[args.network])
+        contract = Contract(abifile = args.abi, address = args.address, provider_url = URL[network])
         arg_list = args.call.split(' ')
         func_name = arg_list[0]
         contract.call(func_name, arg_list[1:])
@@ -97,7 +98,8 @@ def main():
         config = {}
         if not os.path.exists(default_config_path):
             config = {
-                    'privkey': '',
+                    'accounts': [],
+                    'defaultAccount': 0,
                     'network': 'ropsten',
                     'infurakey': '',
             }
@@ -106,9 +108,12 @@ def main():
         if args.network:
             config['network'] = args.network
         if args.privkey:
-            config['privkey'] = args.privkey
+            config['accounts'].append(args.privkey)
+            config['defaultAccount'] = len(config['accounts']) - 1
         if args.infurakey:
             config['infurakey'] = args.infurakey
+        if args.account:
+            config['defaultAccount'] = args.account
         f = open(default_config_path, 'w')
         json.dump(config, f)
 

@@ -3,15 +3,28 @@ import json
 
 default_config_path = os.environ['HOME'] + '/.ethct.json'
 
-key = json.load(open(default_config_path))
+try:
+    config = json.load(open(default_config_path))
+except:
+    config = {
+            'accounts':[],
+            'defaultAccount': 0,
+            'network': 'ropsten',
+            'infurakey': '',
+    }
 
 URL = {
-    'mainnet': "https://mainnet.infura.io/v3/" + key['infurakey'],
-    'ropsten': "https://ropsten.infura.io/v3/" + key['infurakey'],
-    'rinkeby': "https://rinkeby.infura.io/v3/" + key['infurakey'],
-    'kovan': "https://kovan.infura.io/v3/" + key['infurakey'],
+    'mainnet': "https://mainnet.infura.io/v3/" + config['infurakey'],
+    'ropsten': "https://ropsten.infura.io/v3/" + config['infurakey'],
+    'rinkeby': "https://rinkeby.infura.io/v3/" + config['infurakey'],
+    'kovan': "https://kovan.infura.io/v3/" + config['infurakey'],
     'local': "http://localhost:8545",
 }
 
-PRIVATE_KEY = key['privkey']
-NETWORK = key['network']
+NETWORK = config['network']
+try:
+    defaultAccount = config['defaultAccount']
+    PRIVATE_KEY = config['accounts'][defaultAccount]
+except:
+    defaultAccount = None
+    PRIVATE_KEY = None
