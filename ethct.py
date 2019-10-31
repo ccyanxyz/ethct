@@ -48,7 +48,7 @@ def main():
     parser.add_argument('--config', help = "add config options", action = "store_true")
     parser.add_argument('--privkey', help = "add private key")
     parser.add_argument('--infurakey', help = "set infura apikey")
-    parser.add_argument('--account', help = "set default account", type = int, default = -1)
+    parser.add_argument('--account', help = "set default account", default = None)
     parser.add_argument('--delete', help = "delete account", type = int)
 
     parser.add_argument('--showconfig', help = "print config", action = "store_true")
@@ -115,11 +115,12 @@ def main():
             config['defaultAccount'] = len(config['accounts']) - 1
         if args.infurakey:
             config['infurakey'] = args.infurakey
-        if args.account >= 0 and args.account < len(config['accounts']):
-            config['defaultAccount'] = args.account
-        else:
-            print('account index out of range')
-            exit()
+        if args.account is not None:
+            if int(args.account) >= 0 and int(args.account) < len(config['accounts']):
+                config['defaultAccount'] = int(args.account)
+            else:
+                print('account index out of range')
+                exit()
         if args.delete:
             config['accounts'].pop(args.delete)
             config['defaultAccount'] = 0
