@@ -25,7 +25,7 @@ def main():
     parser.add_argument('-s', '--save', help = "save compile output", action = 'store_true', default = False)
     # deploy contract
     parser.add_argument('-d', '--deploy', help = "deploy contract")
-    parser.add_argument('-n', '--network', help = "choose network", default = "ropsten")
+    parser.add_argument('-n', '--network', help = "choose network")
     parser.add_argument('-v', '--value', help = "deploy tx value", default = None, type = float)
     # call contract function
     parser.add_argument('--address', help = "contract address")
@@ -47,7 +47,10 @@ def main():
     parser.add_argument('--infurakey', help = "set infura apikey")
 
     args = parser.parse_args()
-    web3 = Web3(HTTPProvider(URL[args.network]))
+    network = NETWORK
+    if args.network is not None:
+        network = args.network
+    web3 = Web3(HTTPProvider(URL[network]))
     if not args.config:
         if not os.path.exists(default_config_path):
             print('use `ethct --config --privkey <PRIVKEY> --infurakey <APIKEY> --network <NETWORK>` to config the tool first')
@@ -59,7 +62,10 @@ def main():
         contract.compile(save = args.save)
     elif args.deploy:
         check_privkey()
-        contract = Contract(args.deploy, provider_url = URL[args.network])
+        network = NETWORK
+        if args.network is not None:
+            network = args.network
+        contract = Contract(args.deploy, provider_url = URL[network])
         contract.deploy(value = args.value)
     elif args.call:
         check_privkey()
