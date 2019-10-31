@@ -148,7 +148,7 @@ def main():
         nonce = None
         data = ""
         if args.nonce:
-            nonce = args.nonce
+            nonce = int(args.nonce)
         if args.data:
             data = args.data
         sendtx(web3 = web3, to = args.to, value = args.value, nonce = nonce, data = data)
