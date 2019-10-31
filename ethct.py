@@ -49,6 +49,7 @@ def main():
     parser.add_argument('--privkey', help = "add private key")
     parser.add_argument('--infurakey', help = "set infura apikey")
     parser.add_argument('--account', help = "set default account", type = int)
+    parser.add_argument('--showconfig', help = "print config", action = "store_true")
 
     args = parser.parse_args()
     network = NETWORK
@@ -116,6 +117,12 @@ def main():
             config['defaultAccount'] = args.account
         f = open(default_config_path, 'w')
         json.dump(config, f)
+    elif args.showconfig:
+        if not os.path.exists(default_config_path):
+            print('config file not found')
+        else:
+            config = json.load(open(default_config_path))
+            print(config)
 
 if __name__ == '__main__':
     main()
