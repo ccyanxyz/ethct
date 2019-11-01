@@ -1,6 +1,7 @@
 import os
 import json
 import subprocess
+import platform
 from constants import *
 from web3 import Web3, HTTPProvider
 
@@ -40,7 +41,7 @@ class Contract:
             cmd = 'solc ' + self.sourcefile + ' --abi --bin -o ' + os.getcwd() + '/build --overwrite'
             ret = subprocess.call(cmd, shell = True)
             if ret != 0:
-                print('compile error, check if you have installed the `solc` solidity compile')
+                print('compile error, check if you have installed the `solc` solidity compile/correct the error in your code')
                 exit()
         abifile = ''
         bytecodefile = ''
@@ -53,6 +54,8 @@ class Contract:
         self.bytecode = open(os.getcwd() + '/build/' + bytecodefile).read()
         if not save:
             cmd = "rm -rf build"
+            if 'windows' in platform.platform().lower():
+                cmd = "rmdir /s /q build"
             subprocess.call(cmd, shell = True)
 
     def deploy(self, value = None, overwrite = False, show = True):
