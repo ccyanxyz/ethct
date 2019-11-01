@@ -38,7 +38,10 @@ class Contract:
         with open(self.sourcefile, 'r') as f:
             source = f.read()
             cmd = 'solc ' + self.sourcefile + ' --abi --bin -o ' + os.getcwd() + '/build --overwrite'
-            subprocess.call(cmd, shell = True)
+            ret = subprocess.call(cmd, shell = True)
+            if ret != 0:
+                print('compile error, check if you have installed the `solc` solidity compile')
+                exit()
         abifile = ''
         bytecodefile = ''
         for f in os.listdir(os.getcwd() + '/build'):
