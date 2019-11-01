@@ -17,6 +17,7 @@ setup(
     keywords = 'ethereum contract command-line-tool',
     install_requires = ['web3>=4.2.1'],
     py_modules = ['ethct', 'constants', 'ethct_contract', 'ethct_helper'],
+    include_package_data = True,
     entry_points = {
         'console_scripts': [
             'ethct=ethct:main'
