@@ -2,12 +2,12 @@
 from setuptools import setup
 from os import path
 this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'readme.md'), 'r') as f:
+with open(path.join(this_directory, 'README.md'), 'r') as f:
     long_description = f.read()
 
 setup(
     name = 'ethct',
-    version = '19.10.31.6',
+    version = '19.11.1',
     description = 'Ethereum contract tool(command line)',
     long_description = long_description,
     long_description_content_type = "text/markdown",
