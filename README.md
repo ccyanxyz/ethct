@@ -146,7 +146,7 @@ contract FuzzyIdentityChallenge {
 The only way to set `isComplete` to `true` is call the `authenticate` function, but with 2 restrictions:
 
 * The caller has to implement the `IName` interface, which means the caller has to be a contract.
-* The address of the caller must contains `badc0de`, we know that contract addresses are generated deterministically in Ethereum with the rightmost 160 bits of the keccak256 result of the sender address and nonce in RLP encoding. After a while of brute forcing, we can get a right private key and nonce. [Code](https://github.com/ccyanxyz/capturetheerher/blob/master/fuzzy_identity.js).
+* The address of the caller must contains `badc0de`, we know that contract addresses are generated deterministically in Ethereum with the rightmost 160 bits of the keccak256 result of the sender address and nonce in RLP encoding. After a while of brute forcing, we can get a right private key and nonce. [Code](https://github.com/ccyanxyz/capturetheether/blob/master/fuzzy_identity.js).
 
 Here is our exploit contract:
 
@@ -181,7 +181,7 @@ contract returnAddress {
 
 We now have a private key `ca96819b848883b0694c8b284d55f1259849339e477e7d606f07ce0656fbe357` and a nonce value `6`,  the associate address is `0xe09FBEFc7FfE44FB5E825Edd797dE0160e1d7B3B`, we need to use this account to deploy the exploit contract and call the `exploit` funtion.
 
-First, configure ethct with one of your own private key:
+First, configure ethct with one of your own private keys:
 
 ```
 ethct --config --privkey <YOUR_PRIVATE_KEY>
@@ -193,7 +193,7 @@ Transfer some ether to `0xe09FBEFc7FfE44FB5E825Edd797dE0160e1d7B3B`
 ethct --sendtx --to 0xe09FBEFc7FfE44FB5E825Edd797dE0160e1d7B3B --value 0.1
 ```
 
-Now switch to the previous account:
+Now switch account:
 
 ```
 ethct --config --privkey ca96819b848883b0694c8b284d55f1259849339e477e7d606f07ce0656fbe357
@@ -205,13 +205,13 @@ Deploy `returnSmarx` contract:
 ethct --deploy ./fuzzy_identity_solver.sol --contract returnSmarx
 ```
 
-Node that the nonce should be `6` to generate the correct contract address, so just deploy the contract 6 times, and you can check the nonce of the address use the following command:
+Note that the nonce should be `6` to generate the correct contract address, you can just deploy the contract 6 times, and you can check the nonce of the address use the following command:
 
 ```
 ethct --getnonce 0xe09FBEFc7FfE44FB5E825Edd797dE0160e1d7B3B
 ```
 
-Now we successfully deployed the `returnSmarx` contract to address `0x433F86192F11A521261BAdC0dec67bf812360442` which contains `badc0de`.
+Now we have successfully deployed the `returnSmarx` contract to address `0x433F86192F11A521261BAdC0dec67bf812360442` which contains `badc0de`.
 
 Call the `exploit` function of `returnSmarx` contract at `0x433F86192F11A521261BAdC0dec67bf812360442`:
 
@@ -240,4 +240,6 @@ To make my life easier completing the [CaptureTheEther](https://capturetheether.
 
 ![leaderboard](./imgs/leaderboard.png)
 
-![happynerd](./imgs/happynerd.gif)
+<div style="text-align: center">
+<img src="./imgs/happynerd.gif"/>
+</div>
