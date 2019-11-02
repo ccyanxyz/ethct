@@ -32,7 +32,7 @@ class Contract:
         if hasattr(self, 'abi') and hasattr(self, 'address'):
             self.contract = self.web3.eth.contract(self.address, abi = self.abi)
 
-    def compile(self, save = True):
+    def compile(self, contract = None, save = True):
         if hasattr(self, 'abi') and hasattr(self, 'bytecode'):
             print('contract has been compiled')
             return
@@ -46,10 +46,16 @@ class Contract:
         abifile = ''
         bytecodefile = ''
         for f in os.listdir(os.getcwd() + '/build'):
-            if 'abi' in f:
-                abifile = f
-            if 'bin' in f:
-                bytecodefile = f
+            if contract is not None:
+                if contract + '.abi' == f:
+                    abifile = f
+                if contract + '.bin' == f:
+                    bytecodefile = f
+            else:
+                if 'abi' in f:
+                    abifile = f
+                if 'bin' in f:
+                    bytecodefile = f
         self.abi = json.load(open(os.getcwd() + '/build/' + abifile))
         self.bytecode = open(os.getcwd() + '/build/' + bytecodefile).read()
         if not save:
@@ -58,14 +64,14 @@ class Contract:
                 cmd = "rmdir /s /q build"
             subprocess.call(cmd, shell = True)
 
-    def deploy(self, value = None, overwrite = False, show = True):
+    def deploy(self, contract = None, args = [], value = None, overwrite = False, show = True):
         if hasattr(self, 'address') and not overwrite:
             print('contract has been deployed')
             return
         if not hasattr(self, 'abi') or not hasattr(self, 'bytecode'):
-            self.compile(save = True)
+            self.compile(contract = contract, save = True)
 
-        deploy_tx = self.web3.eth.contract(abi = self.abi, bytecode = self.bytecode).constructor().buildTransaction({
+        deploy_tx = self.web3.eth.contract(abi = self.abi, bytecode = self.bytecode).constructor(*args).buildTransaction({
             'from': self.account.address,
             'value': 0 if value is None else self.web3.toWei(str(value), 'ether'),
             'nonce': self.web3.eth.getTransactionCount(self.account.address),

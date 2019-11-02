@@ -31,6 +31,8 @@ def main():
     parser.add_argument('-d', '--deploy', help = "deploy contract")
     parser.add_argument('-n', '--network', help = "choose network")
     parser.add_argument('-v', '--value', help = "deploy tx value", default = None, type = float)
+    parser.add_argument('--contract', help = "contract name to be deployed")
+    parser.add_argument('--args', help = "contract constructor arguments")
     # call contract function
     parser.add_argument('--address', help = "contract address")
     parser.add_argument('--abi', help = "contract ABI file")
@@ -72,14 +74,27 @@ def main():
 
     if args.compile:
         contract = Contract(args.compile)
-        contract.compile(save = args.save)
+        contract.compile(contract = args.contract, save = args.save)
     elif args.deploy:
         check_privkey()
         contract = Contract(args.deploy, provider_url = URL[network])
-        contract.deploy(value = args.value)
+        init_args = []
+        if args.args:
+            init_args = args.args.split(' ')
+        contract.deploy(contract = args.contract, args = init_args, value = args.value)
     elif args.call:
         check_privkey()
-        contract = Contract(abifile = args.abi, address = args.address, provider_url = URL[network])
+        abifile = None
+        if args.contract and 'build' in os.listdir('./'):
+            for f in os.listdir('build'):
+                if args.contract + '.abi' == f:
+                    abifile = './build/' + f
+        if args.contract and abifile is None:
+            print('ABI not found for contract ' + args.contract)
+            exit()
+        if args.abi:
+            abifile = args.abi
+        contract = Contract(abifile = abifile, address = args.address, provider_url = URL[network])
         arg_list = args.call.split(' ')
         func_name = arg_list[0]
         contract.call(func_name, arg_list[1:])
