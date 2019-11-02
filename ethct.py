@@ -60,6 +60,8 @@ def main():
     parser.add_argument('--to', help = "tx receiver")
     parser.add_argument('--data', help = "tx data")
     parser.add_argument('--nonce', help = "tx nonce")
+    # get nonce
+    parser.add_argument('--getnonce', help = "get nonce of an address")
 
     args = parser.parse_args()
     network = NETWORK
@@ -167,6 +169,9 @@ def main():
         if args.data:
             data = args.data
         sendtx(web3 = web3, to = args.to, value = args.value, nonce = nonce, data = data)
+    elif args.getnonce:
+        nonce = web3.eth.getTransactionCount(args.getnonce)
+        print(nonce)
 
 if __name__ == '__main__':
     main()
