@@ -3,3 +3,4 @@ build
 config.json
 dist
 ethct.egg-info
+.DS_Store
