@@ -1,4 +1,4 @@
-## Ethct: Ethereum contract tool (command line)
+## Ethct: Ethereum contract tool (command line) [![Build Status](https://travis-ci.org/ccyanxyz/ethct.svg?branch=master)](https://travis-ci.org/ccyanxyz/ethct)
 
 ### 1. Now support:
 
