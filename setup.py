@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), 'r') as f:
 
 setup(
     name = 'ethct',
-    version = '19.11.3',
+    version = '20.04.03',
     description = 'Ethereum contract tool(command line)',
     long_description = long_description,
     long_description_content_type = "text/markdown",

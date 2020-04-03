@@ -10,6 +10,7 @@ class Contract:
     def __init__(self,
             sourcefile = None,
             abifile = None,
+            abi = None,
             bytecodefile = None,
             address = None,
             provider_url = None):
@@ -23,6 +24,8 @@ class Contract:
         self.account = self.web3.eth.account.privateKeyToAccount(PRIVATE_KEY)
         self.web3.eth.defaultAccount = self.account
 
+        if abi is not None:
+            self.abi = abi
         if abifile is not None:
             self.abi = json.load(open(abifile))
         if bytecodefile is not None:
@@ -31,6 +34,9 @@ class Contract:
             self.address = self.web3.toChecksumAddress(address)
         if hasattr(self, 'abi') and hasattr(self, 'address'):
             self.contract = self.web3.eth.contract(self.address, abi = self.abi)
+
+    def set_privkey(self, privkey):
+        self.account = self.web3.eth.account.privateKeyToAccount(privkey)
 
     def compile(self, contract = None, save = True):
         if hasattr(self, 'abi') and hasattr(self, 'bytecode'):
@@ -90,7 +96,7 @@ class Contract:
     def call(self, func_name, arg_list, show = True):
         abiinfo = {}
         for info in self.abi:
-            if info['name'] == func_name:
+            if 'name' in info.keys() and info['name'] == func_name:
                 abiinfo = info
                 break
         func = self.contract.functions.__getitem__(func_name)
